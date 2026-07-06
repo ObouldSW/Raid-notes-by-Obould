@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Raid Notes — Obould</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0a10">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0b0a10;
+    --bg2: #0f0d14;
+    --card: #17141c;
+    --gold: #d4af6a;
+    --gold-br: #f0d38a;
+    --emerald: #2a4a3d;
+    --t1: #f0ead9;
+    --t2: #a89a80;
+    --t3: #5c5346;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{
+    background: var(--bg);
+    color: var(--t1);
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overscroll-behavior-y: contain;
+  }
+  .wrap{ max-width: 640px; margin: 0 auto; padding-bottom: 40px; }
+
+  /* HERO */
+  .hero{
+    position: relative;
+    padding: 56px 24px 30px;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 120% 70% at 50% 0%, rgba(212,175,106,.14), transparent 60%),
+      linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+    border-bottom: 1px solid rgba(212,175,106,.15);
+  }
+  .hero-glyph{ width: 64px; height: 64px; margin: 0 auto 14px; opacity: .95; }
+  .eyebrow{
+    font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 10px;
+  }
+  h1{
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 34px;
+    letter-spacing: .02em; color: var(--t1);
+    text-shadow: 0 4px 24px rgba(212,175,106,.25);
+  }
+  .tagline{ font-size: 13.5px; color: var(--t2); margin-top: 10px; }
+
+  /* CHAPTER LIST */
+  .toc-label{
+    display: flex; align-items: center; gap: 12px;
+    padding: 28px 24px 14px; font-size: 11px; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--t3);
+  }
+  .toc-label::after{ content:''; flex:1; height:1px; background: rgba(212,175,106,.15); }
+
+  .chapters{ display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+
+  .chapter{
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--card), #14111a);
+    border: 1px solid rgba(212,175,106,.12);
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .chapter:active{ transform: scale(.98); border-color: rgba(212,175,106,.4); }
+
+  .chapter-num{
+    font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+    color: var(--t3); width: 22px; flex-shrink: 0; text-align: center;
+  }
+
+  .seal{
+    width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 35% 30%, var(--seal-glow, rgba(212,175,106,.25)), rgba(0,0,0,.3));
+    border: 1.5px solid var(--seal-col, var(--gold));
+  }
+  .seal svg{ width: 28px; height: 28px; color: var(--seal-col, var(--gold)); }
+
+  .chapter-body{ flex: 1; min-width: 0; }
+  .chapter-name{ font-size: 15.5px; font-weight: 700; color: var(--t1); margin-bottom: 3px; }
+  .chapter-meta{ font-size: 11.5px; color: var(--t2); }
+
+  .chapter-arrow{ width: 16px; height: 16px; color: var(--t3); flex-shrink: 0; }
+
+  .placeholder{
+    opacity: .45; pointer-events: none;
+  }
+  .placeholder .chapter-meta{ font-style: italic; }
+
+  .footer{ text-align: center; padding: 36px 24px 20px; }
+  .footer-line{ width: 32px; height: 1px; background: var(--gold); opacity: .3; margin: 0 auto 14px; }
+  .footer-text{ font-size: 10.5px; letter-spacing: .1em; color: var(--t3); text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-glyph">
+      <svg viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#d4af6a" stroke-width="1.2" stroke-dasharray="4 3" opacity=".5"/>
+        <path d="M50 32c-9-4-22-4-30 2v34c8-6 21-6 30-2 9-4 22-4 30 2V34c-8-6-21-6-30-2Z" fill="none" stroke="#d4af6a" stroke-width="2.2" stroke-linejoin="round"/>
+        <line x1="50" y1="32" x2="50" y2="66" stroke="#d4af6a" stroke-width="1.6" opacity=".8"/>
+        <circle cx="50" cy="24" r="2" fill="#f0d38a"/>
+      </svg>
+    </div>
+    <p class="eyebrow">VS / DR / MQD</p>
+    <h1>Raid Notes</h1>
+    <p class="tagline">Visual boss guides — tap a chapter to open</p>
+  </div>
+
+  <p class="toc-label">Prototype — 3 of 9 wired in</p>
+
+  <div class="chapters">
+
+    <a class="chapter" href="guides/rotmire.html">
+      <span class="chapter-num">01</span>
+      <span class="seal" style="--seal-col:#5fc96d; --seal-glow:rgba(95,201,109,.25)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11c0-4.4 4-8 9-8s9 3.6 9 8c0 1.2-1 2-2.2 1.7C16.5 12.2 14.4 11 12 11s-4.5 1.2-6.8 1.7C4 13 3 12.2 3 11Z"/><path d="M9 11v6a3 3 0 0 0 6 0v-6"/></svg>
+      </span>
+      <span class="chapter-body">
+        <span class="chapter-name">Rotmire</span>
+        <span class="chapter-meta">Sporefall · single boss</span>
+      </span>
+      <svg class="chapter-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+
+    <a class="chapter" href="guides/chimaerus.html">
+      <span class="chapter-num">02</span>
+      <span class="seal" style="--seal-col:#c084ff; --seal-glow:rgba(192,132,255,.25)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="5" r="2"/><circle cx="18" cy="15" r="2"/><circle cx="6" cy="15" r="2"/></svg>
+      </span>
+      <span class="chapter-body">
+        <span class="chapter-name">Chimaerus the Undreamt God</span>
+        <span class="chapter-meta">VS/DR/MQD · Heroic · 4 cards</span>
+      </span>
+      <svg class="chapter-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+
+    <a class="chapter" href="guides/beloren.html">
+      <span class="chapter-num">08</span>
+      <span class="seal" style="--seal-col:#5a7fe6; --seal-glow:rgba(90,127,230,.25)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2c4 4 7 8 7 12a7 7 0 0 1-14 0c0-4 3-8 7-12Z"/></svg>
+      </span>
+      <span class="chapter-body">
+        <span class="chapter-name">Belo'ren, Child of Al'ar</span>
+        <span class="chapter-meta">VS/DR/MQD · Heroic · 3 cards</span>
+      </span>
+      <svg class="chapter-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+
+    <div class="chapter placeholder">
+      <span class="chapter-num">—</span>
+      <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M2 12h20"/></svg></span>
+      <span class="chapter-body">
+        <span class="chapter-name">Averzian, Vorasius, Salhadaar…</span>
+        <span class="chapter-meta">Remaining 6 wire in the same way</span>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-line"></div>
+    <p class="footer-text">Raid Notes — Obould</p>
+  </div>
+
+</div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
