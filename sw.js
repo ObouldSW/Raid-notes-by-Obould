@@ -1,7 +1,4 @@
-const CACHE_NAME = 'raid-notes-v4';
-
-// Images and icons rarely change once a guide is built — safe to cache aggressively.
-const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
+const CACHE_NAME = 'raid-notes-v5';
 
 const PRECACHE_URLS = [
   './index.html',
@@ -51,19 +48,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-function isImage(url) {
-  return IMAGE_EXTENSIONS.some((ext) => url.endsWith(ext));
-}
-
 self.addEventListener('fetch', (event) => {
   const url = event.request.url;
-
-  // HTML pages (including index.html and every guide page): always try the
-  // network first so updates show up immediately. Only fall back to the
-  // cached copy if there's no signal at all.
   const isHTML = event.request.mode === 'navigate' || url.endsWith('.html') || url.endsWith('/');
 
   if (isHTML) {
+    // Pages: always try the network first so content updates show up immediately.
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -76,18 +66,21 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Images and everything else: serve from cache instantly if we have it,
-  // otherwise fetch and store it for next time.
+  // Images: stale-while-revalidate. Serve the cached copy instantly for
+  // speed, but always fetch a fresh copy in the background and store it —
+  // so if the image changed on the server, the NEXT load shows the update
+  // automatically, with no manual cache-clearing needed.
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
+      const fetchPromise = fetch(event.request).then((response) => {
         if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      });
+      }).catch(() => cached);
+
+      return cached || fetchPromise;
     })
   );
 });
