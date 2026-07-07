@@ -1,17 +1,11 @@
-const CACHE_NAME = 'raid-notes-v3';
+const CACHE_NAME = 'raid-notes-v4';
+
+// Images and icons rarely change once a guide is built — safe to cache aggressively.
+const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
+
 const PRECACHE_URLS = [
-  './',
   './index.html',
   './manifest.json',
-  './rotmire.html',
-  './averzian.html',
-  './vorasius.html',
-  './salhadaar.html',
-  './vanguard.html',
-  './cosmos.html',
-  './chimaerus.html',
-  './beloren.html',
-  './midnightfalls.html',
   './rotmire-boss-guide.png',
   './averzian-1-overview.png',
   './averzian-2-claiming.png',
@@ -57,7 +51,33 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+function isImage(url) {
+  return IMAGE_EXTENSIONS.some((ext) => url.endsWith(ext));
+}
+
 self.addEventListener('fetch', (event) => {
+  const url = event.request.url;
+
+  // HTML pages (including index.html and every guide page): always try the
+  // network first so updates show up immediately. Only fall back to the
+  // cached copy if there's no signal at all.
+  const isHTML = event.request.mode === 'navigate' || url.endsWith('.html') || url.endsWith('/');
+
+  if (isHTML) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Images and everything else: serve from cache instantly if we have it,
+  // otherwise fetch and store it for next time.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
@@ -67,7 +87,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      }).catch(() => cached);
+      });
     })
   );
 });
